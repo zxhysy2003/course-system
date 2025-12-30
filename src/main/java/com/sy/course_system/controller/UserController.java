@@ -6,6 +6,8 @@ import com.sy.course_system.dto.RegisterDTO;
 import com.sy.course_system.service.UserService;
 import com.sy.course_system.vo.UserVO;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -59,5 +63,18 @@ public class UserController {
         return Result.success(res);
     }
 
+    @GetMapping("/profile")
+    public Result<Map<String, Object>> profile(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        String username = (String) request.getAttribute("username");
+        String role = (String) request.getAttribute("role");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("username", username);
+        map.put("role", role);
+        
+        return Result.success(map);
+    }
 
 }
