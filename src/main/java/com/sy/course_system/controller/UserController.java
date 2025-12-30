@@ -1,6 +1,7 @@
 package com.sy.course_system.controller;
 
 import com.sy.course_system.common.Result;
+import com.sy.course_system.common.UserContext;
 import com.sy.course_system.dto.LoginDTO;
 import com.sy.course_system.dto.RegisterDTO;
 import com.sy.course_system.service.UserService;
@@ -64,15 +65,13 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public Result<Map<String, Object>> profile(HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
-        String username = (String) request.getAttribute("username");
-        String role = (String) request.getAttribute("role");
-
+    public Result<Map<String, Object>> profile() {
+        
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("username", username);
-        map.put("role", role);
+        
+        map.put("userId", UserContext.getUserId());
+        map.put("username", UserContext.getUsername());
+        map.put("role", UserContext.getRole());
         
         return Result.success(map);
     }

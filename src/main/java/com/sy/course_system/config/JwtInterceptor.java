@@ -3,6 +3,8 @@ package com.sy.course_system.config;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.sy.course_system.common.UserContext;
+import com.sy.course_system.common.UserInfo;
 import com.sy.course_system.utils.JwtUtil;
 
 import io.jsonwebtoken.Claims;
@@ -36,9 +38,13 @@ public class JwtInterceptor implements HandlerInterceptor {
 
             // 4. 可以将用户信息存储在请求属性中，供后续使用
             Number userIdNum = (Number) claims.get("userId");
-            request.setAttribute("userId", userIdNum.longValue());
-            request.setAttribute("username", claims.get("username"));
-            request.setAttribute("role", claims.get("role"));
+            Long userId = userIdNum.longValue();
+            String username = (String) claims.get("username");
+            String role = (String) claims.get("role");
+            
+            UserInfo userInfo = new UserInfo(userId, username, role);
+            UserContext.set(userInfo);
+            
         } catch (ExpiredJwtException e) {
             response.setStatus(401);
             response.getWriter().write("Token无效或已过期");
@@ -50,5 +56,15 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         return true; // 放行
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, 
+                                HttpServletResponse response, 
+                                Object handler, 
+                                Exception ex)
+            throws Exception {
+        // 清理线程变量，防止内存泄漏
+        UserContext.clear();
     }
 }
