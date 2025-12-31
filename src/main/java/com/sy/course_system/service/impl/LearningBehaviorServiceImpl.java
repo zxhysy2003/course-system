@@ -1,6 +1,7 @@
 package com.sy.course_system.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,10 @@ public class LearningBehaviorServiceImpl implements LearningBehaviorService {
         behavior.setCreateTime(LocalDateTime.now());
 
         learningBehaviorMapper.insert(behavior);
+    }
+
+    @Override
+    public List<LearningBehavior> listAllBehaviors() {
+        return learningBehaviorMapper.selectList(null);
     }
 }

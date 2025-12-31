@@ -3,8 +3,6 @@ package com.sy.course_system.behavior.service;
 import com.sy.course_system.behavior.entity.LearningBehavior;
 import com.sy.course_system.behavior.model.ImplicitScoreCalculator;
 import com.sy.course_system.dto.UserCourseScoreDTO;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
