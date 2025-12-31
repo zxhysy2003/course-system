@@ -12,6 +12,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.lang.Nullable;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
@@ -62,7 +63,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, 
                                 HttpServletResponse response, 
                                 Object handler, 
-                                Exception ex)
+                                @Nullable Exception ex)
             throws Exception {
         // 清理线程变量，防止内存泄漏
         UserContext.clear();

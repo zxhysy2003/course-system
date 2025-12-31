@@ -7,8 +7,6 @@ import com.sy.course_system.dto.RegisterDTO;
 import com.sy.course_system.service.UserService;
 import com.sy.course_system.vo.UserVO;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
