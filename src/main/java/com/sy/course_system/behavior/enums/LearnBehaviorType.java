@@ -1,0 +1,8 @@
+package com.sy.course_system.behavior.enums;
+
+public enum LearnBehaviorType {
+    VIEW,       // 浏览
+    STUDY,      // 学习
+    FINISH,     // 完成
+    FAVOURITE,  // 收藏
+}

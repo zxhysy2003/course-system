@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.sy.course_system.entity.LearningBehavior;
+import com.sy.course_system.behavior.entity.LearningBehavior;
 
 import io.lettuce.core.dynamic.annotation.Param;
 

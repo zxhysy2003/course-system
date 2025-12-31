@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sy.course_system.common.UserContext;
-import com.sy.course_system.entity.LearningBehavior;
+import com.sy.course_system.behavior.enums.LearnBehaviorType;
+import com.sy.course_system.behavior.entity.LearningBehavior;
 import com.sy.course_system.mapper.LearningBehaviorMapper;
 import com.sy.course_system.service.LearningBehaviorService;
 
@@ -16,7 +17,7 @@ public class LearningBehaviorServiceImpl implements LearningBehaviorService {
     private LearningBehaviorMapper learningBehaviorMapper;
 
     @Override
-    public void recordBehavior(Long courseId, String behaviorType) {
+    public void recordBehavior(Long courseId, LearnBehaviorType behaviorType) {
         
         LearningBehavior behavior = new LearningBehavior();
         behavior.setUserId(UserContext.getUserId());
@@ -34,7 +35,7 @@ public class LearningBehaviorServiceImpl implements LearningBehaviorService {
         LearningBehavior behavior = new LearningBehavior();
         behavior.setUserId(UserContext.getUserId());
         behavior.setCourseId(courseId);
-        behavior.setBehaviorType("STUDY");
+        behavior.setBehaviorType(LearnBehaviorType.STUDY);
         behavior.setDuration(duration);
         behavior.setCreateTime(LocalDateTime.now());
 

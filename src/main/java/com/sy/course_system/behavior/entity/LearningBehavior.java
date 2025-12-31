@@ -1,15 +1,16 @@
-package com.sy.course_system.entity;
+package com.sy.course_system.behavior.entity;
 
 import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.sy.course_system.behavior.enums.LearnBehaviorType;
 
 @TableName("learning_behavior")
 public class LearningBehavior {
     private Long id;
     private Long userId;
     private Long courseId;
-    private String behaviorType;
+    private LearnBehaviorType behaviorType;
     private Integer duration;
     private LocalDateTime createTime;
 
@@ -31,10 +32,10 @@ public class LearningBehavior {
     public void setCourseId(Long courseId) {
         this.courseId = courseId;
     }
-    public String getBehaviorType() {
+    public LearnBehaviorType getBehaviorType() {
         return behaviorType;
     }
-    public void setBehaviorType(String behaviorType) {
+    public void setBehaviorType(LearnBehaviorType behaviorType) {
         this.behaviorType = behaviorType;
     }
     public Integer getDuration() {
