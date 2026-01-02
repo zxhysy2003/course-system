@@ -8,15 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 public class ScoreAggregateService {
     public static Map<String, Double> aggregate(List<LearningBehavior> behaviors) {
         return behaviors.stream()
                 .collect(Collectors.groupingBy(
                         b -> b.getUserId() + "_" + b.getCourseId(),
-                        Collectors.summingDouble(ImplicitScoreCalculator::calculate)
-                ));
+                        Collectors.summingDouble(ImplicitScoreCalculator::calculate)));
     }
+
     public static List<UserCourseScoreDTO> toScoreDTO(Map<String, Double> scoreMap) {
         List<UserCourseScoreDTO> list = new ArrayList<>();
         for (Map.Entry<String, Double> entry : scoreMap.entrySet()) {

@@ -18,6 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户控制器
+ * 处理用户相关的业务逻辑，包括用户注册、登录、查询个人信息等操作
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -28,11 +32,20 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * 获取所有用户列表
+     * @return 返回用户列表，包含用户基本信息
+     */
     @GetMapping("/list")
     public Result<List<UserVO>> list() {
         return Result.success(userService.listUsers());
     }
 
+    /**
+     * 获取指定用户的详细信息
+     * @param id 用户ID
+     * @return 返回用户详细信息，如果用户不存在返回错误
+     */
     @GetMapping("/{id}")
     public Result<UserVO> detail(@PathVariable Long id) {
         UserVO userVO = userService.getUserById(id);
@@ -42,6 +55,11 @@ public class UserController {
         return Result.success(userVO);
     }
 
+    /**
+     * 用户注册
+     * @param registerDTO 注册信息，包含用户名和密码
+     * @return 返回注册结果，成功返回提示信息，失败返回对应错误信息
+     */
     @PostMapping("/register")
     public Result<String> register(@RequestBody RegisterDTO registerDTO) {
         Integer res = userService.register(registerDTO);
@@ -53,6 +71,11 @@ public class UserController {
         return Result.success("注册成功");
     }
 
+    /**
+     * 用户登录
+     * @param loginDTO 登录信息，包含用户名和密码
+     * @return 返回登录结果，成功返回JWT token，失败返回错误信息
+     */
     @PostMapping("/login")
     public Result<String> login(@RequestBody LoginDTO loginDTO) {
         String res = userService.login(loginDTO);
@@ -62,6 +85,10 @@ public class UserController {
         return Result.success(res);
     }
 
+    /**
+     * 获取当前登录用户的个人信息
+     * @return 返回当前用户的ID、用户名和角色信息
+     */
     @GetMapping("/profile")
     public Result<Map<String, Object>> profile() {
         

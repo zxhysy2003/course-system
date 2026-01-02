@@ -2,6 +2,8 @@ package com.sy.course_system.behavior.entity;
 
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sy.course_system.behavior.enums.LearnBehaviorType;
 
@@ -12,6 +14,7 @@ public class LearningBehavior {
     private Long courseId;
     private LearnBehaviorType behaviorType;
     private Integer duration;
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     public Long getId() {
