@@ -30,8 +30,8 @@ public class LearningAnalysisController {
 
     // 热门课程
     @GetMapping("/hot")
-    public Result<?> hotCourses(@RequestParam(defaultValue = "10") Integer limit) {
-        return Result.success(learningAnalysisService.getHotCourses(limit));
+    public Result<?> hotCourses(@RequestParam(defaultValue = "10") Integer topN) {
+        return Result.success(learningAnalysisService.getHotCourses(topN));
     }
     
 }

@@ -5,13 +5,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sy.course_system.behavior.entity.LearningBehavior;
 import com.sy.course_system.behavior.service.ScoreAggregateService;
 import com.sy.course_system.dto.RecommendRequestDTO;
@@ -34,8 +38,13 @@ public class RecommendServiceImpl implements RecommendService {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
     @Value("${recommend.service.url}")
     private String recommendServiceUrl;
+
+    private static final long CACHE_TTL_MINUTES = 15; // 缓存15分钟
 
     public RecommendResponseDTO recommend(Long userId) {
 
@@ -60,6 +69,18 @@ public class RecommendServiceImpl implements RecommendService {
     }
 
     public List<CourseRecommendVO> recommendCourseVO(Long userId) {
+
+        // 1.尝试从Redis缓存获取推荐结果
+        String key = "recommend:user:" + userId;
+        Object cached = redisTemplate.opsForValue().get(key);
+
+        if (cached != null) {
+            List<CourseRecommendVO> cache = new ObjectMapper().convertValue(cached, new TypeReference<List<CourseRecommendVO>>() {});
+            return cache;
+        }
+        
+        // 2.缓存未命中 -> 调用原来的推荐逻辑
+
         RecommendResponseDTO response = recommend(userId);
 
         List<Long> courseIds = response.getCourseIds();
@@ -90,6 +111,10 @@ public class RecommendServiceImpl implements RecommendService {
             vo.setRecommendReason(buildRecommendReason(userId, course));
             result.add(vo);
         }
+
+        // 3.将结果缓存到Redis
+        redisTemplate.opsForValue().set(key, result, CACHE_TTL_MINUTES, TimeUnit.MINUTES);
+
         return result;
     }
 
@@ -115,5 +140,11 @@ public class RecommendServiceImpl implements RecommendService {
             default:
                 return "优质推荐课程";
         }
+    }
+
+    @Override
+    public void refreshUserRecommendCache(Long userId) {
+        String key = "recommend:user:" + userId;
+        redisTemplate.delete(key); // 删除缓存，下次访问时会重新计算推荐结果
     }
 }

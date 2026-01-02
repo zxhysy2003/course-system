@@ -1,7 +1,7 @@
 package com.sy.course_system.service;
 
 import java.util.List;
-import java.util.Map;
+import com.sy.course_system.vo.CourseRecommendVO;
 
 public interface LearningAnalysisService {
     
@@ -9,5 +9,7 @@ public interface LearningAnalysisService {
 
     List<Long> getMyLearnedCourses();
 
-    List<Map<String, Object>> getHotCourses(Integer limit);
+    void increaseCourseHot(Long courseId, double score);
+
+    List<CourseRecommendVO> getHotCourses(Integer topN);
 }

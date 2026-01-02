@@ -14,7 +14,7 @@ public class Course {
     private String description;
     private String coverUrl;
     private Integer difficulty;
-    private Integer duration;
+    private Integer duration; // 课程时长，单位：分钟
     private String tags;
     private Integer status;
     @TableField(fill = FieldFill.INSERT)

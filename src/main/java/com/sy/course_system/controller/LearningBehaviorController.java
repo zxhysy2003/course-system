@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sy.course_system.common.Result;
+import com.sy.course_system.common.UserContext;
 import com.sy.course_system.behavior.enums.LearnBehaviorType;
+import com.sy.course_system.service.LearningAnalysisService;
 import com.sy.course_system.service.LearningBehaviorService;
+import com.sy.course_system.service.RecommendService;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +25,12 @@ public class LearningBehaviorController {
     @Autowired
     private LearningBehaviorService learningBehaviorService;
 
+    @Autowired
+    private LearningAnalysisService learningAnalysisService; // 用于热门课程热度更新
+
+    @Autowired
+    private RecommendService recommendService;
+
     /**
      * 记录用户查看课程的行为
      * @param courseId 课程ID
@@ -30,6 +39,10 @@ public class LearningBehaviorController {
     @PostMapping("/view/{courseId}")
     public Result<Integer> viewCourse(@PathVariable Long courseId) {
         learningBehaviorService.recordBehavior(courseId, LearnBehaviorType.VIEW);
+        
+        // 更新热门课程热度
+        learningAnalysisService.increaseCourseHot(courseId, 0.5); // 浏览行为加0.5热度分值
+
         return Result.success(0);
     }
     
@@ -41,6 +54,13 @@ public class LearningBehaviorController {
     @PostMapping("/finish/{courseId}")
     public Result<Integer> finishCourse(@PathVariable Long courseId) {
         learningBehaviorService.recordBehavior(courseId, LearnBehaviorType.FINISH);
+
+        // 更新热门课程热度
+        learningAnalysisService.increaseCourseHot(courseId, 2.0); // 完成行为加2.0热度分值
+
+        // 刷新推荐缓存
+        recommendService.refreshUserRecommendCache(UserContext.getUserId());
+
         return Result.success(0);
     }
 
@@ -54,6 +74,10 @@ public class LearningBehaviorController {
     public Result<Integer> study(@RequestParam Long courseId,
                             @RequestParam Integer duration) {
         learningBehaviorService.recordStudy(courseId, duration);
+
+        // 按分钟加权，假设每 30 分钟加 1.0 分
+        double score = duration / 30.0;
+        learningAnalysisService.increaseCourseHot(courseId, score);
         return Result.success(0);
     }
 
@@ -65,6 +89,13 @@ public class LearningBehaviorController {
     @PostMapping("/favourite")
     public Result<Integer> favouriteCourse(@PathVariable Long courseId) {
         learningBehaviorService.recordBehavior(courseId, LearnBehaviorType.FAVOURITE);
+
+        // 收藏行为加 5 分
+        learningAnalysisService.increaseCourseHot(courseId, 5.0);
+
+        // 刷新推荐缓存
+        recommendService.refreshUserRecommendCache(UserContext.getUserId());
+
         return Result.success(0);
     }
 }
