@@ -16,8 +16,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sy.course_system.behavior.entity.LearningBehavior;
-import com.sy.course_system.behavior.service.ScoreAggregateService;
 import com.sy.course_system.dto.RecommendRequestDTO;
 import com.sy.course_system.dto.RecommendResponseDTO;
 import com.sy.course_system.dto.UserCourseScoreDTO;
@@ -48,13 +46,15 @@ public class RecommendServiceImpl implements RecommendService {
 
     public RecommendResponseDTO recommend(Long userId) {
 
-        // 1. 获取所有用户的学习行为数据
-        List<LearningBehavior> behaviors = learningBehaviorService.listAllBehaviors();
+        // // 1. 获取所有用户的学习行为数据
+        // List<LearningBehavior> behaviors = learningBehaviorService.listAllBehaviors();
 
-        // 2. 聚合成 (userId, courseId, score) 格式的数据
-        Map<String, Double> scoresMap = ScoreAggregateService.aggregate(behaviors);
+        // // 2. 聚合成 (userId, courseId, score) 格式的数据
+        // Map<String, Double> scoresMap = ScoreAggregateService.aggregate(behaviors);
 
-        List<UserCourseScoreDTO> scoreList = ScoreAggregateService.toScoreDTO(scoresMap);
+        // List<UserCourseScoreDTO> scoreList = ScoreAggregateService.toScoreDTO(scoresMap);
+
+        List<UserCourseScoreDTO> scoreList = learningBehaviorService.listAggregatedScores();
 
         // 3. 调用推荐服务
         RecommendRequestDTO request = new RecommendRequestDTO();

@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sy.course_system.behavior.entity.LearningBehavior;
-
+import com.sy.course_system.dto.UserCourseBaseScoreDTO;
 import io.lettuce.core.dynamic.annotation.Param;
 
 @Mapper
@@ -40,5 +40,18 @@ public interface LearningBehaviorMapper extends BaseMapper<LearningBehavior> {
             LIMIT #{limit}
             """)
     List<Map<String, Object>> hotCourses(@Param("limit") Integer limit);
+
+    @Select("""
+                SELECT 
+                        user_id,
+                        course_id,
+                        SUM(LOG(1 + IFNULL(lb.duration, 0)) * bw.weight) AS base_score,
+                        MAX(lb.create_time) AS last_time
+                FROM learning_behavior lb
+                JOIN behavior_weight bw
+                  ON lb.behavior_type = bw.behavior_type
+                GROUP BY user_id, course_id;
+            """)
+    List<UserCourseBaseScoreDTO> listUserCourseBaseScores();
 
 }
