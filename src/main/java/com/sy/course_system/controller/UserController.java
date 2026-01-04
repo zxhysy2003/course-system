@@ -3,10 +3,11 @@ package com.sy.course_system.controller;
 import com.sy.course_system.common.Result;
 import com.sy.course_system.common.UserContext;
 import com.sy.course_system.dto.LoginDTO;
-import com.sy.course_system.dto.RegisterDTO;
+import com.sy.course_system.dto.UserRegisterDTO;
 import com.sy.course_system.service.UserService;
 import com.sy.course_system.vo.UserVO;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,11 +27,8 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     /**
      * 获取所有用户列表
@@ -61,7 +59,7 @@ public class UserController {
      * @return 返回注册结果，成功返回提示信息，失败返回对应错误信息
      */
     @PostMapping("/register")
-    public Result<String> register(@RequestBody RegisterDTO registerDTO) {
+    public Result<String> register(@RequestBody UserRegisterDTO registerDTO) {
         Integer res = userService.register(registerDTO);
         if (res == null) {
             return Result.error(500, "注册失败");

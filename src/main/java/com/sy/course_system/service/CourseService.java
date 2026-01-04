@@ -3,6 +3,7 @@ package com.sy.course_system.service;
 import java.util.List;
 import java.util.Map;
 
+import com.sy.course_system.dto.CourseRegisterDTO;
 import com.sy.course_system.entity.Course;
 
 public interface CourseService {
@@ -20,4 +21,9 @@ public interface CourseService {
      * 根据ID列表批量获取课程，并转换为Map
      */
     Map<Long, Course> mapByIds(List<Long> courseIds);
+
+    /**
+     * 课程注册
+     */
+    Integer register(CourseRegisterDTO registerDTO);
 }

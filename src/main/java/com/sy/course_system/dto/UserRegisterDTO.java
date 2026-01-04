@@ -1,6 +1,6 @@
 package com.sy.course_system.dto;
 
-public class RegisterDTO {
+public class UserRegisterDTO {
     private String username;
     private String password;
     private String email;

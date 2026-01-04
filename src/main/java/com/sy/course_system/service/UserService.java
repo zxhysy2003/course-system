@@ -1,6 +1,6 @@
 package com.sy.course_system.service;
 import com.sy.course_system.dto.LoginDTO;
-import com.sy.course_system.dto.RegisterDTO;
+import com.sy.course_system.dto.UserRegisterDTO;
 import com.sy.course_system.vo.UserVO;
 
 
@@ -11,7 +11,7 @@ public interface UserService {
 
     UserVO getUserById(Long id);
 
-    Integer register(RegisterDTO registerDTO);
+    Integer register(UserRegisterDTO registerDTO);
 
     String login(LoginDTO loginDTO);
     

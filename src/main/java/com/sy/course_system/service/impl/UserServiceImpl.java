@@ -2,14 +2,17 @@ package com.sy.course_system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sy.course_system.dto.LoginDTO;
-import com.sy.course_system.dto.RegisterDTO;
+import com.sy.course_system.dto.UserRegisterDTO;
 import com.sy.course_system.entity.User;
 import com.sy.course_system.mapper.UserMapper;
+import com.sy.course_system.repository.UserNodeRepository;
 import com.sy.course_system.service.UserService;
 import com.sy.course_system.utils.JwtUtil;
 import com.sy.course_system.vo.UserVO;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,11 +21,12 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
-    public UserServiceImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+    @Autowired
+    private UserNodeRepository userNodeRepository;
+
 
     @Override
     public List<UserVO> listUsers() {
@@ -59,7 +63,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer register(RegisterDTO registerDTO) {
+    @Transactional
+    public Integer register(UserRegisterDTO registerDTO) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", registerDTO.getUsername());
 
@@ -74,6 +79,11 @@ public class UserServiceImpl implements UserService {
         user.setRole("STUDENT");
         user.setStatus(1);
         userMapper.insert(user);
+
+        Long userId = user.getId();
+        // 在图数据库中创建用户节点
+        userNodeRepository.createUser(userId);
+
         return 1;
     }
 
