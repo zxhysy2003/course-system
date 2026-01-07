@@ -1,4 +1,4 @@
-package com.sy.course_system.graph;
+package com.sy.course_system.graph.relationship;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
 import org.springframework.data.neo4j.core.schema.TargetNode;
+
+import com.sy.course_system.graph.node.CourseNode;
 
 @RelationshipProperties
 public class LearnRelationship {

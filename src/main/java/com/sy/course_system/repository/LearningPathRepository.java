@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.sy.course_system.dto.LearningPathDto;
-import com.sy.course_system.graph.CourseNode;
+import com.sy.course_system.graph.node.CourseNode;
 
 @Repository
 public interface LearningPathRepository extends Neo4jRepository<CourseNode, Long> {

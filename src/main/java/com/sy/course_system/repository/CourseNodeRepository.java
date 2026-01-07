@@ -4,7 +4,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.sy.course_system.graph.CourseNode;
+import com.sy.course_system.graph.node.CourseNode;
 
 @Repository
 public interface CourseNodeRepository extends Neo4jRepository<CourseNode, Long> {

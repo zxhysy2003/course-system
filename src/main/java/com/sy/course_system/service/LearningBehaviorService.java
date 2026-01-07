@@ -8,11 +8,13 @@ import com.sy.course_system.dto.UserCourseScoreDTO;
 
 public interface LearningBehaviorService {
 
-    void recordBehavior(Long courseId, LearnBehaviorType behaviorType);
+    void recordBehavior(Long courseId, LearnBehaviorType behaviorType, Integer duration);
     
-    void recordStudy(Long courseId, Integer duration);
-
     List<LearningBehavior> listAllBehaviors();
 
     List<UserCourseScoreDTO> listAggregatedScores();
+
+    void startStudy(Long courseId);
+
+    void endStudy(Long courseId);
 }

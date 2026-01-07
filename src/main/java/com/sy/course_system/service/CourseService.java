@@ -26,4 +26,9 @@ public interface CourseService {
      * 课程注册
      */
     Integer register(CourseRegisterDTO registerDTO);
+
+    /**
+     * 获取课程关联的知识点ID列表
+     */
+    List<Long> getKnowledgePointIdsByCourseId(Long courseId);
 }

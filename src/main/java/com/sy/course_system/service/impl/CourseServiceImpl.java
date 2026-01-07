@@ -81,5 +81,10 @@ public class CourseServiceImpl implements CourseService {
 
         return 1;
     }
+
+    @Override
+    public List<Long> getKnowledgePointIdsByCourseId(Long courseId) {
+        return courseMapper.selectKnowledgePointIdsByCourseId(courseId);
+    }
     
 }

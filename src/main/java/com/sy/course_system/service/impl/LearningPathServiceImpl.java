@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sy.course_system.common.UserContext;
 import com.sy.course_system.dto.LearningPathDto;
+import com.sy.course_system.graph.node.KnowledgePointNode;
+import com.sy.course_system.repository.KnowledgePointRepository;
 import com.sy.course_system.repository.LearningPathRepository;
 import com.sy.course_system.service.LearningPathService;
 import com.sy.course_system.vo.LearningPathRecommendVO;
@@ -16,6 +19,8 @@ public class LearningPathServiceImpl implements LearningPathService {
     @Autowired
     private LearningPathRepository learningPathRepository;
 
+    @Autowired
+    private KnowledgePointRepository knowledgePointRepository;
 
     @Override
     public List<LearningPathRecommendVO> recommendPath(Long courseId) {
@@ -37,6 +42,14 @@ public class LearningPathServiceImpl implements LearningPathService {
             return vo;
         }).toList();
 
+    }
+
+    /**
+     * 为用户根据当前所学知识点推荐后续知识点的学习路径
+     */
+    @Override
+    public List<List<KnowledgePointNode>> recommendLearningPathsForUser(Long kpId) {
+        return knowledgePointRepository.recommendLearningPaths(UserContext.getUserId(), kpId);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.sy.course_system.graph;
+package com.sy.course_system.graph.node;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.neo4j.core.schema.Node;
